@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" style="text-align: center; background-color: bisque;">
+    
+    <head>
+        <title> Dashboard </title>
+        <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+      background-color: burlywood;
+    }
+  </style>
+       
+    </head>
+
+    <body style="background-color: bisque;">
+
+        <nav  class="navbar navbar-inverse">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>                        
+                </button>
+                <a style="color: black;" class="navbar-brand" href="/static/LOGO.png">Logo</a>
+              </div>
+              <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                  <li class="active"><a href="/{{username}}/dashboard">Dashboard</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a style="color: black;" href="/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        <div>
+          <u><h1 style="text-align:center">Hello {{username}} !!!</h1></u>
+        </div>
+        <h4> Hi {{username}}!!! We welcome you to track your routine and manage it. So, <strong> Let's Track it!!</strong> with <strong> The Self Tracker.</strong> </h4>
+        <section>
+          <form>
+          <!-- CREATE TRACKER --><br>
+          <button class="ui  button is-success" type="button"><a href="/{{username}}/create_tracker">Add Tracker</a></button> 
+                <span class="icon is-small is-left">
+                  <i class="fas fa-user"></i>
+                </span>
+      </form>
+      <br>
+      {%if tracks|length <1 %}
+      <h4 style="text-align:center">There are no trackers.Create one !!</h4>
+      {%else%}
+      <div class="ui container">
+          
+          <table class="table table-striped">
+              <tr class="ui grey header">
+                  <th style="text-align:center">Tracker</th>
+                  <th style="text-align:center">Last Tracked</th>
+                  <th style="text-align:center">Tracker Type</th>
+                  <th style="text-align:center">Add</th>
+                  <th style="text-align:center">Actions</th>
+              </tr>
+              {%for tracker in tracks %}
+              <tr class="table table-striped">
+                  <td>{{tracker.name}}</td>
+                  <td>{{tracker.date_created.date()}}</td>
+                  <td>{{tracker.tracker_type}}</td>
+                  {%if tracker.tracker_type=='Numeric'%}
+                  <td><button class="ui button" type="button"><a href="/{{username}}/{{tracker.id}}/logs">Add logs</a></button></td>
+                  {%elif tracker.tracker_type=='Boolean'%}
+                  <td><button class="ui button" type="button"><a href="/{{username}}/{{tracker.id}}/logs">Add logs</a></button></td>
+                  {%elif tracker.tracker_type=='Multiple Choice'%}
+                  <td><button class="ui button" type="button"><a href="/{{username}}/{{tracker.id}}/logs">Add logs</a></button></td>
+                  {%endif%}
+                  <td><a class="ui red button" href="/{{username}}/{{tracker.id}}/delete">Delete</a>
+              
+                      <a class="ui green button" href="/{{username}}/update/{{tracker.id}}">Update</a>
+  
+                  </td>
+              </tr>
+              {%endfor%}
+          </table>
+          {%endif%}
+      </div>
+  </section>
+    </body>
+    <footer class="container-fluid text-center">
+        <p>&copy;SelfTracker2022. All Rights reserved.</p>
+      </footer>
+</html>
+

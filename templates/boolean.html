@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" style="text-align: center; background-color: bisque;">
+    
+<head>
+  <title> Boolean Tracker </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+      background-color: burlywood;
+    }
+  </style>
+       
+</head>
+
+<body style="background-color: bisque;">
+
+  <nav  class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        <a style="color: black;" class="navbar-brand" href="/static/LOGO.png">Logo</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/{{username}}/{{parent_tracker.id}}/logs">Boolean Log</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a style="color: black;" href="/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a style="color: black;" href="/{{username}}/dashboard"><span class="glyphicon glyphicon-log-in"></span> Dashboard</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div>
+    <u><h1 style="text-align:center">Hello {{username}} !!!</h1></u>
+  </div>
+
+  <h4><strong> Log {{parent_tracker.name}} here!!</strong> </h4>
+
+  <section>
+
+    <form method="post" action="/{{username}}/{{parent_tracker.id}}/logs">
+            <!-- CREATE TRACKER --><br>
+            <div class="card-header"></div>
+                <div class="card-body">
+                          <!-- <form action="" method="">  -->
+                      <div class="form-group row">
+                            
+                            <label for="value" class="col-md-4 col-form-label text-md-right">
+                              Boolean Value:
+                            </label>
+                            
+                            <div class="col-md-6">
+                                <label>Yes</label>
+                                    <input type="radio" id="value" name="_value_" value="Yes" required>
+                                <label>No</label>
+                                    <input type="radio" id="value" name="_value_" value="No"></div> 
+                            </div>
+                      </div>
+                              
+                      <div class="form-group row">
+                            <label for="note" class="col-md-4 col-form-label text-md-right">
+                              Note:
+                            </label>
+                            
+                            <div class="col-md-6">
+                              <textarea type="text" id="note" class="form-control" name="_note_" required></textarea>
+                            </div>
+                      </div>
+                              
+                      <p style="color: red; text-align: center;">{{str}}</p>
+                      
+                      <div style="text-align: center;" class="col-md-6 offset-md-4">
+                        <button  type="submit" class="btn btn-primary">
+                            Log it
+                        </button>
+                      </div>
+                </div>
+            </div>
+    </form>
+  </section>
+<br>
+<br>
+<br>
+    {%if tracks|length <1 %}
+    <h4 style="text-align:center">There are no logs.Create one below!!</h4>
+    {%else%}
+    <div class="ui container">
+        
+        <table class="table table-striped">
+            <tr class="ui grey header">
+                
+                <th style="text-align:center">Value</th>
+                <th style="text-align:center">Note</th>
+                <th style="text-align:center">Last Log</th>
+                <th style="text-align:center">Actions</th>
+            </tr>
+            {%for tracker in tracks %}
+            <tr class="table table-striped">
+        
+                <td>{{tracker.value}}</td>
+                <td>{{tracker.note}}</td>
+                <td>{{tracker.timestamp.time()}} | {{tracker.timestamp.date()}}</td>
+                
+                <td><a class="ui red button" href="/{{username}}/{{parent_tracker.id}}/{{tracker.id}}/delete">Delete</a>
+            
+                    <a class="ui green button" href="/{{username}}/{{parent_tracker.id}}/{{tracker.id}}/update">Update</a>
+    
+                </td>
+            </tr>
+            {%endfor%}
+        </table>
+        {%endif%}
+    </div> 
+</body>
+
+<footer class="container-fluid text-center">
+  <p>&copy;SelfTracker2022. All Rights reserved.</p>
+</footer>
+
+</html>
+
